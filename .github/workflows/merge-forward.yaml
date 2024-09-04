@@ -1,0 +1,32 @@
+name: ⏩ Merge Forward
+on:
+  push:
+    branches:
+      - "release"
+jobs:
+  merge_forward:
+    name: ⏩ Merge Forward
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛎 Checkout
+        uses: actions/checkout@v3
+	with:
+          token: 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
+          fetch-depth: "0"
+      - name: 🪪 Set git name+email
+        run: |
+          git config user.name "Merge Forward"
+          git config user.email "bishal.mazumdar0@gmail.com"
+      - name: 🛣 Merge
+        run: |
+          current_branch="release"
+          next_branch="main"
+          if git branch -r --format "%(refname:short)" | grep "^origin/${next_branch}$"
+          then
+            echo "🪜 Merging ${current_branch} -> ${next_branch}"
+            git checkout "${next_branch}"
+            git merge "${current_branch}"
+            git push
+          else
+            echo "✋ No next branch, doing nothing"
+          fi
