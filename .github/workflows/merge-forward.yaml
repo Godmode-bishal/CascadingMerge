@@ -18,15 +18,6 @@ jobs:
           git config user.name "Merge Forward"
           git config user.email "bishal.mazumdar0@gmail.com"
       - name: 🛣 Merge
-        run: |
-          current_branch="release"
-          next_branch="main"
-          if git branch -r --format "%(refname:short)" | grep "^origin/${next_branch}$"
-          then
-            echo "🪜 Merging ${current_branch} -> ${next_branch}"
-            git checkout "${next_branch}"
-            git merge "${current_branch}"
-            git push
-          else
-            echo "✋ No next branch, doing nothing"
-          fi
+        run: gh pr create -B release -H main --title 'Merge release into main' --body 'Created by Github action'
+        env:
+          GITHUB_TOKEN: ${{ secrets.CI_PAT }}
